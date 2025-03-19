@@ -1,11 +1,13 @@
 export function drawEyelash(ctx, canvas) {
+    console.log('drawing lash');
     const length = Math.random() * 30 + 20;
     const thickness = Math.random() - 2;
     const curveHeight = Math.random() * 20 + 10;
 
+    const dpr = window.devicePixelRatio || 1;
     const position = {
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height
+        x: Math.random() * (canvas.width / dpr),
+        y: Math.random() * (canvas.height / dpr)
     };
 
     const rotation = Math.random() * 360 * (Math.PI / 180);

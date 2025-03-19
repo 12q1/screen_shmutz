@@ -1,8 +1,10 @@
 export function drawClump(ctx, canvas) {
+    console.log('drawing clump');
     const clumpSize = Math.random() * 5;
+    const dpr = window.devicePixelRatio || 1;
     const position = {
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height
+        x: Math.random() * (canvas.width / dpr),
+        y: Math.random() * (canvas.height / dpr)
     };
 
     const clumpColors = [
