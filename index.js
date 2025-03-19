@@ -1,5 +1,4 @@
 (function () {
-    console.log('source')
     const smudgeLayer = document.createElement('canvas');
     smudgeLayer.id = "smudgeCanvas";
     smudgeLayer.style.position = 'fixed';
@@ -26,8 +25,6 @@
     resizeCanvas(); // Set initial canvas size
 
     function drawEyelash() {
-        console.log("drawEyelash() called");
-
         const length = Math.random() * 30 + 20; // Vary length
         const thickness = Math.random()-2; // Vary thickness
         const curveHeight = Math.random() * 20 + 10; // Control curvature
@@ -64,6 +61,4 @@
     }
 
     setInterval(drawEyelash, 10);
-
-    //drawEyelash()
 })();
