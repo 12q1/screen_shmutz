@@ -1,4 +1,5 @@
 (function () {
+    console.log('source')
     const smudgeLayer = document.createElement('canvas');
     smudgeLayer.id = "smudgeCanvas";
     smudgeLayer.style.position = 'fixed';
@@ -13,8 +14,12 @@
     const ctx = canvas.getContext("2d");
 
     function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        const dpr = window.devicePixelRatio || 1; // Get the device pixel ratio
+        canvas.width = window.innerWidth * dpr; 
+        canvas.height = window.innerHeight * dpr;
+        canvas.style.width = "100vw"; 
+        canvas.style.height = "100vh";
+        ctx.scale(dpr, dpr); // Scale the drawing context to match
     }
 
     window.addEventListener("resize", resizeCanvas);
@@ -24,7 +29,7 @@
         console.log("drawEyelash() called");
 
         const length = Math.random() * 30 + 20; // Vary length
-        const thickness = Math.random(); // Vary thickness
+        const thickness = Math.random()-2; // Vary thickness
         const curveHeight = Math.random() * 20 + 10; // Control curvature
 
         const position = {
