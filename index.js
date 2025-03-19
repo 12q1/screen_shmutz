@@ -1,64 +1,28 @@
-(function () {
-    const smudgeLayer = document.createElement('canvas');
-    smudgeLayer.id = "smudgeCanvas";
-    smudgeLayer.style.position = 'fixed';
-    smudgeLayer.style.top = 0;
-    smudgeLayer.style.left = 0;
-    smudgeLayer.style.width = '100vw';
-    smudgeLayer.style.height = '100vh';
-    smudgeLayer.style.pointerEvents = 'none';
-    smudgeLayer.style.zIndex = 9999;
-    document.body.appendChild(smudgeLayer);
-    const canvas = document.getElementById("smudgeCanvas");
-    const ctx = canvas.getContext("2d");
+import { setupCanvas } from './functions/canvasSetup.js';
+import { drawEyelash } from './functions/drawEyelash.js';
+import { drawClump } from './functions/drawClump.js';
 
-    function resizeCanvas() {
-        const dpr = window.devicePixelRatio || 1; // Get the device pixel ratio
-        canvas.width = window.innerWidth * dpr; 
-        canvas.height = window.innerHeight * dpr;
-        canvas.style.width = "100vw"; 
-        canvas.style.height = "100vh";
-        ctx.scale(dpr, dpr); // Scale the drawing context to match
-    }
+// Setup canvas
+const { canvas, ctx } = setupCanvas();
 
-    window.addEventListener("resize", resizeCanvas);
-    resizeCanvas(); // Set initial canvas size
+// Create UI buttons
+function createButton(label, onClick, leftPosition) {
+    const btn = document.createElement("button");
+    btn.textContent = label;
+    btn.style.position = "fixed";
+    btn.style.bottom = "10px";
+    btn.style.padding = "10px";
+    btn.style.margin = "5px";
+    btn.style.background = "rgba(0,0,0,0.7)";
+    btn.style.color = "white";
+    btn.style.border = "none";
+    btn.style.cursor = "pointer";
+    btn.style.zIndex = 10000;
+    btn.style.left = leftPosition;
+    btn.onclick = onClick;
+    document.body.appendChild(btn);
+    return btn;
+}
 
-    function drawEyelash() {
-        const length = Math.random() * 30 + 20; // Vary length
-        const thickness = Math.random()-2; // Vary thickness
-        const curveHeight = Math.random() * 20 + 10; // Control curvature
-
-        const position = {
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height
-        };
-
-        const rotation = Math.random() * 360 * (Math.PI / 180); // Random rotation
-
-        ctx.save();
-        ctx.translate(position.x, position.y);
-        ctx.rotate(rotation);
-
-        ctx.beginPath();
-        ctx.moveTo(-length / 2, 0); // Start from the left
-
-        // Create a curved eyelash shape
-        ctx.quadraticCurveTo(0, -curveHeight, length / 2, 0);
-
-        // Apply a stroke with tapered ends
-        const gradient = ctx.createLinearGradient(-length / 2, 0, length / 2, 0);
-        gradient.addColorStop(0, "rgba(0, 0, 0, 0)"); // Fade at start
-        gradient.addColorStop(0.3, "rgba(0, 0, 0, 0.8)"); // Darkest in middle
-        gradient.addColorStop(1, "rgba(0, 0, 0, 0)"); // Fade at end
-
-        ctx.strokeStyle = gradient;
-        ctx.lineWidth = thickness;
-        ctx.lineCap = "round";
-        ctx.stroke();
-
-        ctx.restore();
-    }
-
-    setInterval(drawEyelash, 10);
-})();
+const eyelashButton = createButton("Draw Eyelash", () => drawEyelash(ctx, canvas), "10px");
+const clumpButton = createButton("Draw Clump", () => drawClump(ctx, canvas), "120px");
